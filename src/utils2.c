@@ -6,7 +6,7 @@
 /*   By: riolivei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:29:46 by riolivei          #+#    #+#             */
-/*   Updated: 2023/02/21 18:57:35 by riolivei         ###   ########.fr       */
+/*   Updated: 2023/02/21 23:47:28 by riolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	died(t_philos *philos)
 {
 	if (get_time() - philos->last_meal >= philos->values->args.tdie)
 	{
-		values->deaths = true;
+		philos->values->deaths = true;
 		dying(philos);
 		return (1);
 	}

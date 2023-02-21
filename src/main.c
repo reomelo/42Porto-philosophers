@@ -6,7 +6,7 @@
 /*   By: riolivei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 17:21:08 by riolivei          #+#    #+#             */
-/*   Updated: 2023/02/21 18:35:40 by riolivei         ###   ########.fr       */
+/*   Updated: 2023/02/21 23:46:55 by riolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	meals_left(t_values *values)
 
 	i = -1;
 	while (++i < values->args.nphilos)
-		if (philos->meals > 0)
+		if (values->philos[i].meals > 0)
 			return (1);
 	return (0);
 }
