@@ -6,7 +6,7 @@
 /*   By: riolivei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 17:57:41 by riolivei          #+#    #+#             */
-/*   Updated: 2023/02/21 18:17:32 by riolivei         ###   ########.fr       */
+/*   Updated: 2023/02/22 16:49:04 by riolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,17 +41,23 @@ typedef struct s_philos{
 	int				n;
 	long int		last_meal;
 	pthread_mutex_t	eating;
+	pthread_mutex_t	is_dying;
 	struct s_values	*values;
 }				t_philos;
 
 typedef struct s_values{
 	long int		start_time;
 	bool			deaths;
+	bool			finished;
 	bool			print;
+	pthread_mutex_t	is_dead;
 	t_args			args;
 	t_philos		*philos;
 	pthread_mutex_t	*forks;
 }				t_values;
+
+//MAIN.C
+int			meals_left(t_values *values);
 
 //UTILS.C
 long int	ft_atoi(const char *str);
@@ -62,6 +68,9 @@ long int	get_time(void);
 //UTILS2.C
 void		free_all_stacks(t_values *values, char c);
 int			locking(t_philos *philos);
+int			died(t_philos *philos, int *count);
+void		message(t_philos *philos, char *str);
+
 
 //ACTIONS.C
 void		thinking(t_philos *philos);

@@ -6,7 +6,7 @@
 /*   By: riolivei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 17:21:08 by riolivei          #+#    #+#             */
-/*   Updated: 2023/02/21 23:46:55 by riolivei         ###   ########.fr       */
+/*   Updated: 2023/02/22 18:08:58 by riolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,16 @@ int	meals_left(t_values *values)
 	int	i;
 
 	i = -1;
+	pthread_mutex_lock(&values->is_dead);
 	while (++i < values->args.nphilos)
+	{
 		if (values->philos[i].meals > 0)
+		{
+			pthread_mutex_unlock(&values->is_dead);
 			return (1);
+		}
+	}
+	pthread_mutex_unlock(&values->is_dead);
 	return (0);
 }
 
@@ -28,7 +35,7 @@ void	joining_threads(t_values *values)
 	int	i;
 
 	i = -1;
-	while (++i < values->args.nphilos)
+	while (++i < values->args.nphilos && !values->deaths)
 		pthread_join(values->philos[i].id, NULL);
 }
 
@@ -39,13 +46,10 @@ void	*lets_eat(void *data)
 	philos = (t_philos *)data;
 	if (!(philos->n % 2))
 		usleep(200);
-	while (!philos->values->deaths && meals_left(philos->values))
+	while (!philos->values->deaths && !philos->values->finished)
 	{
 		if (!forking(philos))
-		{
-			philos->values->print = false;
 			break ;
-		}
 		eating(philos);
 		sleeping(philos);
 		thinking(philos);
@@ -55,22 +59,27 @@ void	*lets_eat(void *data)
 
 void	waiter(t_values *values)
 {
-	int			i;
-	int			count;
+	int	i;
+	int	count;
 	
-	count = 0;
+	i = -1;
 	while (!values->deaths)
 	{
 		i = -1;
+		count = 0;
 		while (++i < values->args.nphilos)
 		{
-			if (died(values->philos[i]))
+			if (died(&values->philos[i], &count))
 				break ;
 		}
-		if (!meals_left(values))
+		if (count >= values->args.nphilos)
+		{
+			pthread_mutex_lock(&values->is_dead);
+			values->finished = true;
+			pthread_mutex_unlock(&values->is_dead);
 			break ;
+		}
 	}
-	return (NULL);
 }
 
 int	main(int argc, char *argv[])
@@ -94,12 +103,10 @@ int	main(int argc, char *argv[])
 		while (++i < values->args.nphilos)
 		{
 			values->philos[i].last_meal = get_time();
-			if (!pthread_create(&values->philos[i].id, NULL,
-				lets_eat, &values->philos[i]))
-				pthread_detach(values->philos[i].id);
+			pthread_create(&values->philos[i].id, NULL, lets_eat, &values->philos[i]);
 		}
-		waiter(&values);
-		/* joining_threads(values); */
+		waiter(values);
+		joining_threads(values);
 	}
 	free_all_stacks(values, 'f');
 	return (0);

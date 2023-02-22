@@ -6,7 +6,7 @@
 /*   By: riolivei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 17:02:12 by riolivei          #+#    #+#             */
-/*   Updated: 2023/02/21 23:47:10 by riolivei         ###   ########.fr       */
+/*   Updated: 2023/02/22 18:54:10 by riolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,56 +14,55 @@
 
 void	dying(t_philos *philos)
 {
-	printf("%ld %d %s\n", get_time() - philos->values->start_time,
-		philos->n, DIED);
+	message(philos, DIED);
+	pthread_mutex_lock(&philos->values->is_dead);
+	philos->values->deaths = true;
+	philos->values->print = false;
+	pthread_mutex_unlock(&philos->values->is_dead);
 }
 
 void	thinking(t_philos *philos)
 {
-	if (philos->values->print)
-		printf("%ld %d %s\n", get_time() - philos->values->start_time,
-			philos->n, THINK);
+	message(philos, THINK);
 }
 
 int	forking(t_philos *philos)
 {
 	int			fork;
 	
-	if (philos->values->deaths || !meals_left(philos->values))	
+	if (philos->values->deaths || philos->values->finished)
 		return (0);
 	pthread_mutex_lock(&philos->values->forks[philos->n - 1]);
-	printf("%ld %d %s\n", get_time() - philos->values->start_time,
-		philos->n, FORK);
+	message(philos, FORK);
 	if (philos->n - 1 == 0)
 		fork = philos->values->args.nphilos - 1;
 	else
 		fork = philos->n - 2;
 	pthread_mutex_lock(&philos->values->forks[fork]);
-	printf("%ld %d %s\n", get_time() - philos->values->start_time,
-		philos->n, FORK);
+	message(philos, FORK);
 	return (1);
 }
 
 void	eating(t_philos *philos)
 {
+	int fork;
+	
 	pthread_mutex_lock(&philos->eating);
 	philos->last_meal = get_time();
-	pthread_mutex_unlock(&philos->eating);
-	printf("%ld %d %s\n", get_time() - philos->values->start_time,
-		philos->n, EAT);
+	message(philos, EAT);
 	usleep(philos->values->args.teat * 1000);
+	pthread_mutex_unlock(&philos->eating);
 	philos->meals--;
 	pthread_mutex_unlock(&philos->values->forks[philos->n - 1]);
 	if (philos->n - 1 == 0)
-		pthread_mutex_unlock(&philos->values->forks[philos
-			->values->args.nphilos - 1]);
+		fork = philos->values->args.nphilos - 1;
 	else
-		pthread_mutex_unlock(&philos->values->forks[philos->n - 2]);
+		fork = philos->n - 2;
+	pthread_mutex_unlock(&philos->values->forks[fork]);
 }
 
 void	sleeping(t_philos *philos)
 {
-	printf("%ld %d %s\n", get_time() - philos->values->start_time,
-		philos->n, SLEEP);
+	message(philos, SLEEP);
 	usleep(philos->values->args.tsleep * 1000);
 }

@@ -6,7 +6,7 @@
 /*   By: riolivei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 18:48:38 by riolivei          #+#    #+#             */
-/*   Updated: 2023/02/22 00:03:54 by riolivei         ###   ########.fr       */
+/*   Updated: 2023/02/22 18:10:10 by riolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,13 +78,16 @@ void	initiate(char *argv[], t_values *values)
 	values->philos = malloc(values->args.nphilos * sizeof(t_philos));
 	values->args.nmeals = INT_MAX;
 	values->deaths = false;
+	values->finished = false;
 	values->print = true;
+	pthread_mutex_init(&values->is_dead, NULL);
 	if (argv[5])
 		values->args.nmeals = (int)ft_atoi(argv[5]);
 	i = -1;
 	while (++i < values->args.nphilos)
 	{
 		pthread_mutex_init(&values->forks[i], NULL);
+		pthread_mutex_init(&values->philos[i].is_dying, NULL);
 		pthread_mutex_init(&values->philos[i].eating, NULL);
 		values->philos[i].meals = values->args.nmeals;
 		values->philos[i].n = i + 1;
