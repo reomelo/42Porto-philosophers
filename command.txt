@@ -1,2 +1,3 @@
 git config --global credential.helper cache
 TOKEN 42: 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
+SHEETS: https://github.com/mharriso/school21-checklists
