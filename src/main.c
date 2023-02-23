@@ -6,7 +6,7 @@
 /*   By: riolivei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 17:21:08 by riolivei          #+#    #+#             */
-/*   Updated: 2023/02/22 18:08:58 by riolivei         ###   ########.fr       */
+/*   Updated: 2023/02/23 18:18:21 by riolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,16 @@ void	*lets_eat(void *data)
 
 	philos = (t_philos *)data;
 	if (!(philos->n % 2))
-		usleep(200);
-	while (!philos->values->deaths && !philos->values->finished)
+		usleep(2000);
+	while (1)
 	{
+		pthread_mutex_lock(&philos->values->is_dead);
+		if (philos->values->deaths || philos->values->finished)
+		{
+			pthread_mutex_unlock(&philos->values->is_dead);
+			break ;
+		}
+		pthread_mutex_unlock(&philos->values->is_dead);
 		if (!forking(philos))
 			break ;
 		eating(philos);
@@ -103,7 +110,8 @@ int	main(int argc, char *argv[])
 		while (++i < values->args.nphilos)
 		{
 			values->philos[i].last_meal = get_time();
-			pthread_create(&values->philos[i].id, NULL, lets_eat, &values->philos[i]);
+			if(!pthread_create(&values->philos[i].id, NULL, lets_eat, &values->philos[i]))
+				pthread_detach(values->philos[i].id);
 		}
 		waiter(values);
 		joining_threads(values);

@@ -6,7 +6,7 @@
 /*   By: riolivei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 17:02:12 by riolivei          #+#    #+#             */
-/*   Updated: 2023/02/22 18:54:10 by riolivei         ###   ########.fr       */
+/*   Updated: 2023/02/23 18:11:56 by riolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,10 @@
 
 void	dying(t_philos *philos)
 {
-	message(philos, DIED);
 	pthread_mutex_lock(&philos->values->is_dead);
 	philos->values->deaths = true;
-	philos->values->print = false;
 	pthread_mutex_unlock(&philos->values->is_dead);
+	message(philos, DIED);
 }
 
 void	thinking(t_philos *philos)
@@ -30,8 +29,13 @@ int	forking(t_philos *philos)
 {
 	int			fork;
 	
+	pthread_mutex_lock(&philos->values->is_dead);
 	if (philos->values->deaths || philos->values->finished)
+	{
+		pthread_mutex_unlock(&philos->values->is_dead);
 		return (0);
+	}
+	pthread_mutex_unlock(&philos->values->is_dead);
 	pthread_mutex_lock(&philos->values->forks[philos->n - 1]);
 	message(philos, FORK);
 	if (philos->n - 1 == 0)
@@ -39,6 +43,8 @@ int	forking(t_philos *philos)
 	else
 		fork = philos->n - 2;
 	pthread_mutex_lock(&philos->values->forks[fork]);
+	if (check_death(philos, fork))
+		return (0);
 	message(philos, FORK);
 	return (1);
 }
@@ -47,12 +53,12 @@ void	eating(t_philos *philos)
 {
 	int fork;
 	
-	pthread_mutex_lock(&philos->eating);
-	philos->last_meal = get_time();
 	message(philos, EAT);
-	usleep(philos->values->args.teat * 1000);
-	pthread_mutex_unlock(&philos->eating);
+	pthread_mutex_lock(&philos->eating);
 	philos->meals--;
+	philos->last_meal = get_time();
+	pthread_mutex_unlock(&philos->eating);
+	usleep(philos->values->args.teat * 1000);
 	pthread_mutex_unlock(&philos->values->forks[philos->n - 1]);
 	if (philos->n - 1 == 0)
 		fork = philos->values->args.nphilos - 1;
