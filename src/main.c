@@ -6,7 +6,7 @@
 /*   By: riolivei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 17:21:08 by riolivei          #+#    #+#             */
-/*   Updated: 2023/02/23 18:18:21 by riolivei         ###   ########.fr       */
+/*   Updated: 2023/02/23 18:41:00 by riolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,8 +110,7 @@ int	main(int argc, char *argv[])
 		while (++i < values->args.nphilos)
 		{
 			values->philos[i].last_meal = get_time();
-			if(!pthread_create(&values->philos[i].id, NULL, lets_eat, &values->philos[i]))
-				pthread_detach(values->philos[i].id);
+			pthread_create(&values->philos[i].id, NULL, lets_eat, &values->philos[i]);
 		}
 		waiter(values);
 		joining_threads(values);

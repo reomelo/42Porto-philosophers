@@ -6,13 +6,13 @@
 #    By: riolivei <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/05 10:49:40 by riolivei          #+#    #+#              #
-#    Updated: 2023/02/23 18:15:20 by riolivei         ###   ########.fr        #
+#    Updated: 2023/02/23 18:40:57 by riolivei         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
 NAME = philo
-CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g
 RM = rm -rf
 
 # -fsanitize=thread
