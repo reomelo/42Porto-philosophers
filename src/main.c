@@ -6,7 +6,7 @@
 /*   By: riolivei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 17:21:08 by riolivei          #+#    #+#             */
-/*   Updated: 2023/02/23 18:41:00 by riolivei         ###   ########.fr       */
+/*   Updated: 2023/02/23 19:03:39 by riolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,5 +119,5 @@ int	main(int argc, char *argv[])
 	return (0);
 }
 
-//ALIVE: clear && make fclean && make && ./philo 2 500 200 100 1
+//ALIVE: clear && make fclean && make && ./philo 2 500 200 200 1
 //DIES: clear && make fclean && make && ./philo 3 310 200 100 1

@@ -6,7 +6,7 @@
 /*   By: riolivei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 17:57:41 by riolivei          #+#    #+#             */
-/*   Updated: 2023/02/23 18:02:12 by riolivei         ###   ########.fr       */
+/*   Updated: 2023/02/23 19:01:42 by riolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ long int	get_time(void);
 
 //UTILS2.C
 void		free_all_stacks(t_values *values, char c);
-int			locking(t_philos *philos);
 int			died(t_philos *philos, int *count);
 void		message(t_philos *philos, char *str);
 int			check_death(t_philos *philos, int fork);

@@ -6,7 +6,7 @@
 /*   By: riolivei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 17:02:12 by riolivei          #+#    #+#             */
-/*   Updated: 2023/02/23 18:11:56 by riolivei         ###   ########.fr       */
+/*   Updated: 2023/02/23 19:04:10 by riolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,9 @@ int	forking(t_philos *philos)
 		fork = philos->values->args.nphilos - 1;
 	else
 		fork = philos->n - 2;
-	pthread_mutex_lock(&philos->values->forks[fork]);
 	if (check_death(philos, fork))
 		return (0);
+	pthread_mutex_lock(&philos->values->forks[fork]);
 	message(philos, FORK);
 	return (1);
 }
