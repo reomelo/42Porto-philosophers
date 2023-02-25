@@ -12,10 +12,9 @@
 
 CC = cc
 NAME = philo
-CFLAGS = -Wall -Wextra -Werror -g -fsanitize=thread
+CFLAGS = -Wall -Wextra -Werror -g
 RM = rm -rf
 
-# -fsanitize=thread
 SRCS = src/main.c src/utils.c src/utils2.c src/actions.c
 OBJS = ${SRCS:.c=.o}
 
