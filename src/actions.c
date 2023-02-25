@@ -6,7 +6,7 @@
 /*   By: riolivei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 17:02:12 by riolivei          #+#    #+#             */
-/*   Updated: 2023/02/23 19:04:10 by riolivei         ###   ########.fr       */
+/*   Updated: 2023/02/25 01:19:27 by riolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	thinking(t_philos *philos)
 int	forking(t_philos *philos)
 {
 	int			fork;
-	
+
 	pthread_mutex_lock(&philos->values->is_dead);
 	if (philos->values->deaths || philos->values->finished)
 	{
@@ -51,8 +51,8 @@ int	forking(t_philos *philos)
 
 void	eating(t_philos *philos)
 {
-	int fork;
-	
+	int	fork;
+
 	message(philos, EAT);
 	pthread_mutex_lock(&philos->eating);
 	philos->meals--;

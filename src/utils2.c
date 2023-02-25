@@ -6,7 +6,7 @@
 /*   By: riolivei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:29:46 by riolivei          #+#    #+#             */
-/*   Updated: 2023/02/23 19:01:16 by riolivei         ###   ########.fr       */
+/*   Updated: 2023/02/25 01:13:09 by riolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	check_death(t_philos *philos, int fork)
 	if (philos->values->deaths || philos->values->finished)
 	{
 		pthread_mutex_unlock(&philos->values->is_dead);
-		pthread_mutex_unlock(&philos->values->forks[philos->n-1]);
+		pthread_mutex_unlock(&philos->values->forks[philos->n - 1]);
 		pthread_mutex_unlock(&philos->values->forks[fork]);
 		return (1);
 	}
@@ -29,7 +29,7 @@ int	check_death(t_philos *philos, int fork)
 int	died(t_philos *philos, int *count)
 {
 	long int	time;
-	
+
 	pthread_mutex_lock(&philos->eating);
 	time = get_time() - philos->last_meal;
 	pthread_mutex_unlock(&philos->eating);
@@ -48,7 +48,7 @@ int	died(t_philos *philos, int *count)
 void	message(t_philos *philos, char *str)
 {
 	long int	time;
-	
+
 	time = get_time() - philos->values->start_time;
 	printf("%ld %d %s\n", time, philos->n, str);
 }

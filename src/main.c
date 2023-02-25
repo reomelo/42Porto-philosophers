@@ -6,7 +6,7 @@
 /*   By: riolivei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 17:21:08 by riolivei          #+#    #+#             */
-/*   Updated: 2023/02/23 19:03:39 by riolivei         ###   ########.fr       */
+/*   Updated: 2023/02/25 01:20:54 by riolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	waiter(t_values *values)
 {
 	int	i;
 	int	count;
-	
+
 	i = -1;
 	while (!values->deaths)
 	{
@@ -104,13 +104,12 @@ int	main(int argc, char *argv[])
 	{
 		initiate(argv, values);
 		i = -1;
-		if (argc == 6 && !values->args.nmeals)
-			free_all_stacks(values, 'f');
 		values->start_time = get_time();
 		while (++i < values->args.nphilos)
 		{
 			values->philos[i].last_meal = get_time();
-			pthread_create(&values->philos[i].id, NULL, lets_eat, &values->philos[i]);
+			pthread_create(&values->philos[i].id, NULL,
+				lets_eat, &values->philos[i]);
 		}
 		waiter(values);
 		joining_threads(values);
