@@ -6,7 +6,7 @@
 	git clone https://github.com/reomelo/42Porto-philosophers.git
 2- Run `make` and execute philo with some arguments (read subject):
 
-	make && ./philo 1 800 200 200
+	make && ./philo 2 500 200 200 3
 
 ### Makefile Available Targets:  
 `make` or `make all` - compiles minishell      
