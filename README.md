@@ -9,7 +9,8 @@
 
 	make
 3- Run philo with some arguments (read subject)
-  ./philo
+
+	./philo 1 800 200 200
 
 #### Makefile Available Targets:  
 `make` or `make all` - compiles minishell      
