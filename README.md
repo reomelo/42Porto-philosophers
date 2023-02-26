@@ -5,12 +5,9 @@
 1- Clone this repository:  
 
 	git clone https://github.com/reomelo/42Porto-minishell.git
-2- Run `make`:
+2- Run `make` and execute philo with some arguments (read subject):
 
-	make
-3- Run philo with some arguments (read subject)
-
-	./philo 1 800 200 200
+	make && ./philo 1 800 200 200
 
 #### Makefile Available Targets:  
 `make` or `make all` - compiles minishell      
