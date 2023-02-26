@@ -12,24 +12,6 @@
 
 #include "philo.h"
 
-int	meals_left(t_values *values)
-{
-	int	i;
-
-	i = -1;
-	pthread_mutex_lock(&values->is_dead);
-	while (++i < values->args.nphilos)
-	{
-		if (values->philos[i].meals > 0)
-		{
-			pthread_mutex_unlock(&values->is_dead);
-			return (1);
-		}
-	}
-	pthread_mutex_unlock(&values->is_dead);
-	return (0);
-}
-
 void	joining_threads(t_values *values)
 {
 	int	i;
