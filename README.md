@@ -7,8 +7,7 @@
 	git clone https://github.com/reomelo/42Porto-minishell.git
 2- Run `make`:
 
-  make
-
+	make
 3- Run philo with some arguments (read subject)
   ./philo
 
