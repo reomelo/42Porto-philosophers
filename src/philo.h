@@ -49,7 +49,6 @@ typedef struct s_values{
 	long int		start_time;
 	bool			deaths;
 	bool			finished;
-	bool			print;
 	pthread_mutex_t	is_dead;
 	t_args			args;
 	t_philos		*philos;
