@@ -12,10 +12,11 @@
 
 CC = cc
 NAME = philo
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror -g -fsanitize=thread
 RM = rm -rf
+VPATH = src
 
-SRCS = src/main.c src/utils.c src/utils2.c src/actions.c
+SRCS = philo.c the_beginning.c action.c action2.c utils.c utils2.c
 OBJS = ${SRCS:.c=.o}
 
 all: $(NAME)

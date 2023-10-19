@@ -5,60 +5,34 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: riolivei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/21 16:29:46 by riolivei          #+#    #+#             */
-/*   Updated: 2023/02/25 01:13:09 by riolivei         ###   ########.fr       */
+/*   Created: 2023/10/19 17:25:30 by riolivei          #+#    #+#             */
+/*   Updated: 2023/10/19 17:25:30 by riolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	check_death(t_philos *philos, int fork)
+size_t	len(char *str)
 {
-	pthread_mutex_lock(&philos->values->is_dead);
-	if (philos->values->deaths || philos->values->finished)
-	{
-		pthread_mutex_unlock(&philos->values->is_dead);
-		pthread_mutex_unlock(&philos->values->forks[philos->n - 1]);
-		pthread_mutex_unlock(&philos->values->forks[fork]);
-		return (1);
-	}
-	pthread_mutex_unlock(&philos->values->is_dead);
-	return (0);
+	int	i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
 }
 
-int	died(t_philos *philos, int *count)
+void	error_msg(char *error_msg)
 {
-	long int	time;
-
-	pthread_mutex_lock(&philos->eating);
-	time = get_time() - philos->last_meal;
-	pthread_mutex_unlock(&philos->eating);
-	if (time >= philos->values->args.tdie)
-	{
-		dying(philos);
-		return (1);
-	}
-	pthread_mutex_lock(&philos->eating);
-	if (philos->meals <= 0)
-		(*count)++;
-	pthread_mutex_unlock(&philos->eating);
-	return (0);
+	write(1, "ERROR: ", 7);
+	write(1, error_msg, len(error_msg));
+	write(1, "\n", 1);
 }
 
-void	message(t_philos *philos, char *str)
+suseconds_t	get_time(void)
 {
-	long int	time;
+	struct timeval	time;
 
-	time = get_time() - philos->values->start_time;
-	printf("%ld %d %s\n", time, philos->n, str);
-}
-
-void	free_all_stacks(t_values *values, char c)
-{
-	if (c == 'f')
-	{
-		free(values->philos);
-		free(values->forks);
-	}
-	free(values);
+	gettimeofday(&time, NULL);
+	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
 }
