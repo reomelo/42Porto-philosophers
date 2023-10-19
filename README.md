@@ -9,9 +9,9 @@
 	make && ./philo 2 500 200 200 3
 
 ### Makefile Available Targets:  
-`make` or `make all` - compiles minishell      
+`make` or `make all` - compiles the project      
 `make clean` - wipes all object files   
-`make fclean` - deletes minishell and all object files   
+`make fclean` - deletes ./philo and all object files   
 `make re` - fclean  + all
 
 ___
